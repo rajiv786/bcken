@@ -1,0 +1,137 @@
+router.post('/bookstoreG',(req,res)=>{
+ 
+    var transporter = nodemailer.createTransport({
+        service: 'gmail',
+        auth: {
+          user: 'sales@hubhawks.com',
+          pass: 'rkcknmtciawqanpq'
+        }
+	});
+	transporter.verify((err, success) => {
+		err
+		  ? console.log(err)
+		  : console.log(`=== Server is ready to take messages: ${success} ===`);
+	});
+	console.log(req.body, 'hhh');
+	
+	let mailOptions = {
+		from: `${req.body.weather}`,
+		to: 'sales@hubhawks.com',
+		subject: `Message from author:- Dashboard`,
+		html: `<br><strong>Which is your preferred book store?</strong><br>${req.body.bookStore}<strong> <br> Who is the publisher of your book?</strong><br>${req.body.publisher}<br> <strong>How many stores would you like to get your book placed at?</strong><br>${req.body.bookplaced}<br> <strong> What kind of promos are you looking for?<br> </strong><br>${req.body.promos}<br> <strong>Get a Quote</strong><br>${req.body.Quote} 
+		<br> <strong>Additional comments (Optional)</strong><br>${req.body.Comments} `,
+	  };
+ 
+    
+     
+    transporter.sendMail(mailOptions, function(error, info){
+        if (error)
+        {
+          res.json({status: true, respMesg: 'Email Sent Successfully'})
+        } 
+        else
+        {
+          res.json({status: true, respMesg: 'Email Sent Successfully'})
+        }
+     
+	});
+	const secondEmailOptions = {
+		from: 'sales@hubhawks.com',
+		to: `${req.body.user1.email}`,
+		subject: 'Thanks for Ordering',
+		html: `<!DOCTYPE html>
+		<html>
+		  <head>
+			<meta name="viewport" content="width=device-width, initial-scale=1">
+			<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+			<title>Hubhawks Order Confirmation</title>
+			<style>
+			  /* Reset styles */
+			  body {
+				margin: 0;
+				padding: 0;
+			  }
+			  table {
+				border-collapse: collapse;
+				border-spacing: 0;
+			  }
+		
+			  /* General styles */
+			  body {
+				font-family: Arial, sans-serif;
+				font-size: 16px;
+				line-height: 1.5;
+				background-repeat: no-repeat;
+				background-size: cover;
+				background-position: center;
+			  }
+			  .container {
+				max-width: 600px;
+				margin: 0 auto;
+				padding: 20px;
+				background-color: rgba(255, 255, 255, 0.8);
+			  }
+			  img {
+				display: block;
+				max-width: 100%;
+			  }
+			  h1 {
+				margin: 0;
+				font-size: 32px;
+				font-weight: 700;
+				line-height: 1.2;
+				color: #333;
+				text-align: center;
+				margin-bottom: 20px;
+			  }
+			  p {
+				margin: 0;
+				font-size: 16px;
+				line-height: 1.5;
+				color: #333;
+				margin-bottom: 20px;
+				text-align: center;
+			  }
+			  a {
+				color: #00b0ff;
+				text-decoration: none;
+			  }
+		
+			  /* Desktop styles */
+			  @media only screen and (min-width: 768px) {
+				/* Container width */
+				.container {
+				  width: 80%;
+				}
+			  }
+			</style>
+		  </head>
+		  <body>
+			<table cellpadding="0" cellspacing="0" border="0" width="100%">
+			  <tr>
+				<td align="center">
+					<img src="https://drive.google.com/uc?export=view&id=1DAyaOiRTn1fi2eVSohkY6-2XgHxuwLd5" alt="Hubhawks Icon" class="icon">
+				
+				  <div class="container">
+					<h1>Thank You for Your Order</h1>
+					<p>Dear </p>
+					<p>We have received your order and are now processing it. You will receive a confirmation email shortly with the order details.</p>
+					<p>If you have any questions, please don't hesitate to contact us at <a href="mailto:sales@hubhawks.com">sales@hubhawks.com</a>.</p>
+					<p>Thank you for choosing Hubhawks!</p>
+				  </div>
+				</td>
+			  </tr>
+			</table>
+		  </body>
+		</html>`
+	  };
+	  
+	  transporter.sendMail(secondEmailOptions, (error, info) => {
+		if (error) {
+		  console.log(error);
+		} else {
+		  console.log('Second email sent: ' + info.response);
+		}
+	  });
+	
+});
