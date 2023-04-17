@@ -1,0 +1,40 @@
+ const handleSend = async(e) => {
+    e.preventDefault();
+    if (username === "") {
+      setErrMsg("Username is required!");
+    } else if (phoneNumber === "") {
+      setErrMsg("Phone number is required!");
+    } else if (email === "") {
+      setErrMsg("Please give your Email!");
+    } else if (!emailValidation(email)) {
+      setErrMsg("Give a valid Email!");
+    } else if (subject === "") {
+      setErrMsg("Plese give your Subject!");
+    } else if (message === "") {
+      setErrMsg("Message is required!");
+    } else {
+      setSuccessMsg(
+        `Thank you dear ${username}, Your Messages has been sent Successfully!`
+      );
+      setErrMsg("");
+      setUsername("");
+      setPhoneNumber("");
+      setEmail("");
+      setSubject("");
+      setMessage("");
+    }
+	  try {
+		  const { data: res } = await axios.post('http://localhost:5000/send-email', { username,
+		  email,
+		  message,phoneNumber,message}).then(response => {
+      // Handle response from the backend
+      console.log(response);
+    });
+		const data = await res;
+		console.log(data);
+	  }
+	  catch(error) { 
+		console.error(error);
+		  
+	  }
+  };
